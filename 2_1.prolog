@@ -1,5 +1,5 @@
- day(2). testResult(8).
- 
+day(2). testResult(8).
+
 :- use_module(lib/solve).
 
 set_is_possible(AvailableRed, AvailableGreen, AvailableBlue, set{red: Red, green: Green, blue: Blue}) :-

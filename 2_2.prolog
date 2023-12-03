@@ -1,5 +1,5 @@
- day(2). testResult(2286).
- 
+day(2). testResult(2286).
+
 :- use_module(lib/solve).
 
 max(A, B, A) :- A > B, !.

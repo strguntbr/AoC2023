@@ -1,5 +1,5 @@
- day(1). testResult('test2', 281).
- 
+day(1). testResult('test2', 281).
+
 :- use_module(lib/solve).
 
 is_number(['0'], 0).
