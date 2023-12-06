@@ -49,7 +49,7 @@ printResult :- verifyTests, printResultWithoutTest.
 printResultWithoutTest :- getData(Data), executePuzzle(Data).
 
 getTestData(Data) :- p_day(Day), fileForDay(Day, 'test', File), loadData(Data, File, Error), checkLoadError(Error, fail).
-getData(Data) :- p_day(Day), fileForDay(Day, 'data', File), loadData(Data, File, Error), !, checkLoadError(Error, []>>halt(6)).
+getData(Data) :- p_day(Day), fileForDay(Day, 'input', File), loadData(Data, File, Error), !, checkLoadError(Error, []>>halt(6)).
 getData(_) :- write('Error: Could not load puzzle data'), halt(5).
 checkLoadError([], _) :- !.
 checkLoadError(Error, ErrorHandler) :- format('Error: ~w', [Error]), call(ErrorHandler).
