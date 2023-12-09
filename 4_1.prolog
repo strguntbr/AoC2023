@@ -1,6 +1,6 @@
 day(4). testResult(13).
 
-:- use_module(lib/solve), use_module(library(regex)).
+:- use_module(lib/solve).
 
 count_winning_numbers(_, [], 0).
 count_winning_numbers(WinningNumbers, [H|T], Count) :-

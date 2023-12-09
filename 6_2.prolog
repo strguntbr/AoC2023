@@ -1,6 +1,6 @@
 day(6). testResult(71503).
 
-:- use_module(lib/solve), use_module(library(regex)).
+:- use_module(lib/solve).
 
 number_of_wins(Time, Distance, Wins) :-
   Wins is ceil(Time/2 + sqrt((Time*Time/4)-Distance) - 1) - floor(Time/2 - sqrt((Time*Time/4)-Distance) + 1) + 1.

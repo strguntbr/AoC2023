@@ -1,6 +1,6 @@
 day(8). testResult(2). testResult("test2", 6).
 
-:- use_module(lib/solve), use_module(library(regex)).
+:- use_module(lib/solve).
 
 navigate("ZZZ", _, _, 0) :- !.
 navigate(Node, [H|T], Instructions, Length) :-

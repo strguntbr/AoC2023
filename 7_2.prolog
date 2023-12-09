@@ -1,6 +1,6 @@
 day(7). testResult(5905).
 
-:- use_module(lib/solve), use_module(library(regex)).
+:- use_module(lib/solve).
 
 compare_cards(=, [], []) :- !.
 compare_cards(<, [H1|_], [H2|_]) :- card_order(_, H1, BiggerCards), member(H2, BiggerCards), !.

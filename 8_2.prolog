@@ -1,6 +1,6 @@
 day(8). testResult("test3", 6).
 
-:- use_module(lib/solve), use_module(library(regex)).
+:- use_module(lib/solve).
 
 gcd(0, GCD, GCD) :- !.
 gcd(X, Y, GCD) :- X < Y, NextY is Y mod X, gcd(X, NextY, GCD).
