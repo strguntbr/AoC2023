@@ -3,6 +3,7 @@
               solve/0,
               getData/1,
               getTestData/1,
+              getTestData/2,
               verifyTests/0,
               printResultWithoutTest/0
           ]).
