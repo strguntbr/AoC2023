@@ -65,26 +65,25 @@ writeResult(Result) :- string(Result), !, split_string(Result, "\n", "", Lines),
 writeResult([SingleLine]) :- !, white(SingleLine, WhiteResult), write(WhiteResult).
 writeResult([FirstLine|OtherLines]) :- !, writeFirstResultLine(FirstLine, StartPos), foreach(member(Line, OtherLines), writeOtherResultLine(StartPos, Line)).
 writeResult(Result) :- white(Result, WhiteResult), write(WhiteResult).
-  
-testResult_(File, ExpectedResult) :- p_testResult(ExpectedResult), p_day(Day), fileForDay(Day, 'test', File).
-testResult_(File, ExpectedResult) :- p_testResult(Extension, ExpectedResult), p_day(Day), format(atom(File), 'input/~w.~w', [Day, Extension]).
+
+testResult_(File, AuxData, ExpectedResult) :- p_testResult(Extension, AuxData, ExpectedResult), p_day(Day), format(atom(File), 'input/~w.~w', [Day, Extension]).
 findTests(Tests) :- findall([File, ExpectedResult], testResult_(File, ExpectedResult), Tests).
 
 verifyTests :- current_predicate(skipTest/0), !, testSkipped(Status), format('[~w] ', [Status]).
 verifyTests :- p_initDynamicTests,
   (
-    not(testResult_(_, _)) -> noTests(Status)
-    ; forall(testResult_(FILE, ExpectedResult), verifyTest(FILE, ExpectedResult)), testPassed(Status)
+    not(testResult_(_, _, _)) -> noTests(Status)
+    ; forall(testResult_(File, AuxData, ExpectedResult), verifyTest(File, AuxData, ExpectedResult)), testPassed(Status)
   ), 
   format('[~w] ', [Status]).
 
-verifyTest(File, ExpectedResult) :- getTestData(File, TestData), executeTest(File, TestData, ExpectedResult).
+verifyTest(File, AuxData, ExpectedResult) :- getTestData(File, TestData), executeTest(File, TestData, AuxData, ExpectedResult).
 getTestData(File, TestData) :- loadData(TestData, File, Error), !, checkTestLoadError(Error).
 getTestData(File, _) :- testFailed(Status), format('[~w] Could not load test data ~w', [Status, File]), halt(1).
 checkTestLoadError([]) :- !.
 checkTestLoadError(Error) :- testFailed(Status), format('[~w] ~w', [Status, Error]), halt(2).
-executeTest(File, TestData, ExpectedResult) :- p_postProcessData(TestData, PostprocessedData), p_result(PostprocessedData, TestResult), !, verifyResult(File, TestResult, ExpectedResult).
-executeTest(File, _, _) :- testFailed(Status), format('[~w] No solution for test data ~w found', [Status, File]), halt(3).
+executeTest(File, TestData, AuxData, ExpectedResult) :- p_postProcessData(TestData, PostprocessedData), p_result(PostprocessedData, AuxData, TestResult), !, verifyResult(File, TestResult, ExpectedResult).
+executeTest(File, _, _, _) :- testFailed(Status), format('[~w] No solution for test data ~w found', [Status, File]), halt(3).
 verifyResult(_, TestResult, TestResult) :- !.
 verifyResult(File, WrongResult, ExpectedResult) :- testFailed(Status), format("[~w] Test ~w returned ", [Status, File]), writeErrorResults(ExpectedResult, WrongResult), halt(4).
 
@@ -132,9 +131,13 @@ p_resetData :- current_predicate(resetData/0) -> resetData ; true.
 p_postProcessData(Data, PostprocessedData) :- current_predicate(postProcessData/2) -> postProcessData(Data, PostprocessedData) ; PostprocessedData=Data.
 p_data_line(Data, Line) :- current_predicate(data_line/2) -> data_line(Data, Line) ; Data=Line.
 p_result(Data, Result) :- result(Data, Result).
+p_result(Data, AuxData, Result) :- AuxData = none -> result(Data, Result) ; result(Data, AuxData, Result).
 p_formatResult(Result, FormattedResult) :- current_predicate(formatResult/2), !, formatResult(Result, FormattedResult). p_formatResult(Result, Result).
-p_testResult(ExpectedResult) :- current_predicate(testResult/1), testResult(ExpectedResult).
-p_testResult(Extension, ExpectedResult) :- current_predicate(testResult/2), testResult(Extension, ExpectedResult).
+p_testResult("test", none, ExpectedResult) :- current_predicate(testResult/1), testResult(ExpectedResult).
+p_testResult(Extension, none, ExpectedResult) :- current_predicate(testResult/2), testResult(Extension, ExpectedResult), string(Extension).
+p_testResult(Extension, AuxData, ExpectedResult) :- current_predicate(testResult/2), testResult([Extension, AuxData], ExpectedResult).
+p_testResult("test", AuxData, ExpectedResult) :- current_predicate(testResult/2), testResult(auxData(AuxData), ExpectedResult).
+p_testResult(Extension, AuxData, ExpectedResult) :- current_predicate(testResult/3), testResult(Extension, AuxData, ExpectedResult).
 p_finalize(Result) :- current_predicate(finalize/1) -> finalize(Result) ; true.
 p_initDynamicTests :- current_predicate(initDynamicTests/0) -> initDynamicTests ; true.
 p_hideResult :- current_predicate(hideResult/0).
