@@ -4,7 +4,8 @@
               nthRow0/3,
               col/2,
               nthCol1/3,
-              nthCol0/3
+              nthCol0/3,
+              transpose/2
           ]).
 
 row(Row, Matrix) :- member(Row, Matrix).
@@ -16,3 +17,8 @@ nthCol1(Index, Matrix, Col) :-
   [Row1|_]=Matrix, length(Row1, Length), between(1, Length, Index),
   maplist([Row,Number] >> nth1(Index, Row, Number), Matrix, Col).
 nthCol0(Index, Matrix, Col) :- nthCol1(Index1, Matrix, Col), Index =:= Index1 - 1.
+
+transpose([[]|T], []) :- T = [] ; transpose(T, []).
+transpose(Matrix, [HCol|TransposedMatrix]) :-
+  maplist([[H|T],H,T]>>true, Matrix, HCol, TCols),
+  transpose(TCols, TransposedMatrix).
