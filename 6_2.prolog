@@ -3,7 +3,7 @@ day(6). testResult(71503).
 :- use_module(lib/solve).
 
 number_of_wins(Time, Distance, Wins) :-
-  Wins is ceil(Time/2 + sqrt((Time*Time/4)-Distance) - 1) - floor(Time/2 - sqrt((Time*Time/4)-Distance) + 1) + 1.
+  Wins is ceil(Time/2 + sqrt((Time^2/4)-Distance) - 1) - floor(Time/2 - sqrt((Time^2/4)-Distance) + 1) + 1.
 
 result([Time, Distance], Wins) :- number_of_wins(Time, Distance, Wins).
 

@@ -8,9 +8,7 @@ number_of_wins(Time, Distance, Wins) :-
 multiply_list([], 1).
 multiply_list([H|T], Product) :- multiply_list(T, NextProduct), Product is NextProduct * H.
 
-result([Times, Distances], Result) :-
-  maplist(number_of_wins, Times, Distances, Wins),
-  multiply_list(Wins, Result).
+result([Times, Distances], Result) :- mapAndAggregate(number_of_wins, Times, Distances, productlist, Result).
 
 /* required for loadData */
 data_line(Numbers, Line) :-

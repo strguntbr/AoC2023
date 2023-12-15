@@ -4,10 +4,10 @@ day(4). testResult(13).
 
 count_winning_numbers(_, [], 0).
 count_winning_numbers(WinningNumbers, [H|T], Count) :-
-  count_winning_numbers(WinningNumbers, T, CountN),
+  count_winning_numbers(WinningNumbers, T, CountN), !, 
   ( member(H, WinningNumbers) -> Count is CountN+1 ; Count = CountN ).
 
-count_points(N, N) :- N =< 1.
+count_points(N, N) :- N =< 1, !.
 count_points(Count, Points) :-
   NextCount is Count - 1,
   count_points(NextCount, NextPoints),
@@ -15,9 +15,7 @@ count_points(Count, Points) :-
 
 card_points(card{id: _, w: WinningNumbers, n: NumbersYouHave}, Points) :- count_winning_numbers(WinningNumbers, NumbersYouHave, Count), count_points(Count, Points).
 
-result(ScratchCards, Points) :-
-  maplist(card_points, ScratchCards, PointsList),
-  sum_list(PointsList, Points).
+result(ScratchCards, Points) :- mapsum(ScratchCards, card_points, Points).
 
 /* required for loadData */
 data_line(card{id: Id, w: WinningNumbers, n: NumbersYouHave}, Line) :-

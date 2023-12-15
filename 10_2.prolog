@@ -34,5 +34,4 @@ inside_tile([X, Y]) :-
 result(Pipes, InsideTilesCount) :-
   assert_pipes(Pipes, 0), pipe('S', X, Y, _), retractall(pipe('S', [_, _], _)), asserta(pipe('S', X, Y, true)),
   find_loop(_), remove_tangling_pipes, replace_start,
-  findall(Pos, inside_tile(Pos), InsideTiles),
-  length(InsideTiles, InsideTilesCount).
+  aggregate_all(count, inside_tile(_), InsideTilesCount).

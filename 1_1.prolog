@@ -24,9 +24,7 @@ extract_calibration_value(Line, CalibrationValue) :-
   last_number(Line, Last),
   CalibrationValue is 10*First + Last.
 
-result(CalibrationDocument, CalibrationValue) :-
-  maplist(extract_calibration_value, CalibrationDocument, X),
-  sum_list(X, CalibrationValue).
+result(CalibrationDocument, CalibrationValue) :- mapsum(CalibrationDocument, extract_calibration_value, CalibrationValue).
 
 /* required for loadData */
 data_line(Data, Line) :- string_chars(Line, Data).

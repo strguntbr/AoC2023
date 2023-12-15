@@ -17,11 +17,10 @@ ranks(Hands, Ranks) :- ranks(Hands, Ranks, 0).
 
 winning(Rank, hand{cards:_, type:_, bid: Bid}, Winning) :- Winning is Rank * Bid.
 
-result(Hands, TotalWinnings) :-
+result(Hands, Winnings) :-
   predsort(compare_hands, Hands, SortedHands),
-  ranks(SortedHands, Ranks),  
-  maplist(winning, Ranks, SortedHands, Winnings),
-  sum_list(Winnings, TotalWinnings).
+  ranks(SortedHands, Ranks),
+  mapAndAggregate(winning, Ranks, SortedHands, sum_list, Winnings).
 
 /* required for loadData */
 data_line(hand{cards: Cards, bid: Bid, type: Type}, Line) :-

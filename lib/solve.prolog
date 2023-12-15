@@ -5,7 +5,11 @@
               getTestData/1,
               getTestData/2,
               verifyTests/0,
-              printResultWithoutTest/0
+              printResultWithoutTest/0,
+              mapsum/3,
+              productlist/2,
+              mapAndAggregate/4,
+              mapAndAggregate/5
           ]).
 :- use_module(library(pio)).
 :- use_module(ansi).
@@ -144,3 +148,12 @@ p_hideResult :- current_predicate(hideResult/0).
 p_notInlineResult :- \+ isAnsiXterm. p_notInlineResult :- current_predicate(notInlineResult/0).
 p_inlineWrongResult :- isAnsiXterm, current_predicate(inlineWrongResult/0) ; \+ p_notInlineResult, p_hideExpectedResultForDiff.
 p_hideExpectedResultForDiff :- isAnsiXterm, current_predicate(hideExpectedResultForDiff/0).
+
+/* Misc useful utility functions */
+productlist([], 1).
+productlist([H|T], Product) :- productlist(T, TProduct), Product is H*TProduct.
+
+mapsum(List, MapFunction, Sum) :- mapAndAggregate(MapFunction, List, sumlist, Sum).
+
+mapAndAggregate(MapFunction, List, AggregateFunction, Result) :- maplist(MapFunction, List, Values), call(AggregateFunction, Values, Result).
+mapAndAggregate(MapBiFunction, List1, List2, AggregateFunction, Result) :- maplist(MapBiFunction, List1, List2, Values), call(AggregateFunction, Values, Result).

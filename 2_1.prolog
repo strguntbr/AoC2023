@@ -16,8 +16,7 @@ game_id(game{id: Id, sets: _}, Id).
 
 result(Games, IdSum) :-
   include(game_is_possible, Games, PossibleGames),
-  maplist(game_id, PossibleGames, PossibleGameIds),
-  sum_list(PossibleGameIds, IdSum).
+  mapsum(PossibleGames, game_id, IdSum).
 
 /* required for loadData */
 data_line(game{id: Id, sets: Sets}, Line) :-

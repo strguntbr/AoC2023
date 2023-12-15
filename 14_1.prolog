@@ -6,6 +6,7 @@ weight([], 0, 0).
 weight([H|T], Weight, I) :- 
   weight(T, WeightT, IT), I is IT + 1,
   (H = 'O' -> Weight is WeightT + I ; Weight = WeightT).
+weight(Row, Weight) :- weight(Row, Weight, _).
 
 next_rock(R, [R|T], [], T) :- !.
 next_rock(R, ['.'|T], ['.'|NextEmpty], NextRemaining) :- next_rock(R, T, NextEmpty, NextRemaining).
@@ -26,7 +27,7 @@ tilt_matrix(Rocks, TiltedRocks) :- maplist(tilt, Rocks, TiltedRocks).
 result(Rocks, WeightSum) :- 
   transpose(Rocks, TRocks),
   tilt_matrix(TRocks, Tilted),
-  aggregate_all(sum(Weight), (member(Row, Tilted), weight(Row, Weight, _)), WeightSum).
+  mapsum(Tilted, weight, WeightSum).
 
 /* required for loadData */
 data_line(Data, Line) :- string_chars(Line, Data).

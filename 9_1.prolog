@@ -2,6 +2,4 @@ testResult(114).
 
 :- include('9.common.prolog').
 
-result(Numbers, Result) :-
-  maplist(extend, Numbers, _, NextNumbers),
-  sum_list(NextNumbers, Result).
+result(NumbersList, Result) :- mapsum(NumbersList, [Numbers,Next]>>extend(Numbers, _, Next), Result).

@@ -16,9 +16,7 @@ game_minpower(game{id: _, sets: Sets}, MinPower) :-
   sets_mincubes(Sets, MinRed, MinGreen, MinBlue),
   MinPower is MinRed * MinGreen * MinBlue.
 
-result(Games, Powers) :-
-  maplist(game_minpower, Games, MinimumPowers),
-  sum_list(MinimumPowers, Powers).
+result(Games, Powers) :- mapsum(Games, game_minpower, Powers).
 
 /* required for loadData */
 data_line(game{id: Id, sets: Sets}, Line) :-

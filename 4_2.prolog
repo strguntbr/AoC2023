@@ -24,10 +24,9 @@ eval_cards([FirstCardId|OtherCardIds]) :-
   update_card_counts(FirstCardId, CardCount, Wining),
   eval_cards(OtherCardIds).
 
-result(CardIds, Points) :-
+result(CardIds, CardCount) :-
   eval_cards(CardIds),
-  findall(C, card_count(_, C), PointsList),
-  sum_list(PointsList, Points).
+  aggregate_all(sum(C), card_count(_, C), CardCount).
 
 /* required for loadData */
 resetData :- retractall(card(_,_)), retractall(card_count(_,_)).

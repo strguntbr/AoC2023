@@ -11,7 +11,7 @@ mirror([H|T], Reflection) :- mirror(T, [H], Reflection).
 score(Pattern, Score) :- mirror(Pattern, RawScore), !, Score is RawScore * 100.
 score(Pattern, Score) :- transpose(Pattern, TransposedPattern), mirror(TransposedPattern, Score).
 
-result(Patterns, ScoreSum) :- aggregate_all(sum(Score), (member(Pattern, Patterns), score(Pattern, Score)), ScoreSum).
+result(Patterns, ScoreSum) :- mapsum(Patterns, score, ScoreSum).
 
 /* required for loadData */
 data_line(Data, Line) :- string_chars(Line, Data).

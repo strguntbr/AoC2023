@@ -9,7 +9,6 @@ navigate(Node, [H|T], Instructions, Length) :-
   Length is NextLength + 1.
 navigate(Node, [], Instructions, Length) :- navigate(Node, Instructions, Instructions, Length).
 
-
 navigate(Instructions, Length) :- navigate("AAA", Instructions, Instructions, Length).
 
 result([Instructions|_], Length) :- navigate(Instructions, Length).
