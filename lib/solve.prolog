@@ -9,7 +9,8 @@
               mapsum/3,
               productlist/2,
               mapAndAggregate/4,
-              mapAndAggregate/5
+              mapAndAggregate/5,
+              list/3
           ]).
 :- use_module(library(pio)).
 :- use_module(ansi).
@@ -157,3 +158,6 @@ mapsum(List, MapFunction, Sum) :- mapAndAggregate(MapFunction, List, sumlist, Su
 
 mapAndAggregate(MapFunction, List, AggregateFunction, Result) :- maplist(MapFunction, List, Values), call(AggregateFunction, Values, Result).
 mapAndAggregate(MapBiFunction, List1, List2, AggregateFunction, Result) :- maplist(MapBiFunction, List1, List2, Values), call(AggregateFunction, Values, Result).
+
+list(Length, Generator, List) :- functor(Generator, _, 2), !, findall(Elem, (between(1, Length, I), call(Generator, I, Elem)), List).
+list(Length, Elem, List) :- list(Length, [_,Elem]>>true, List).
