@@ -1,14 +1,6 @@
 day(8). testResult("test3", 6).
 
-:- use_module(lib/solve).
-
-gcd(0, GCD, GCD) :- !.
-gcd(X, Y, GCD) :- X < Y, NextY is Y mod X, gcd(X, NextY, GCD).
-gcd(X, Y, GCD) :- X > Y, gcd(Y, X, GCD).
-
-lcm(X, Y, LCM):-gcd(X, Y, GCD), LCM is X*Y/GCD.
-lcm([H], H).
-lcm([H|T], LCM) :- lcm(T, LN), lcm(H, LN, LCM).
+:- use_module(lib/solve), use_module(lib/math).
 
 navigate([_,_,'Z'], _, _, 0) :- !.
 navigate(Node, [H|T], Instructions, Length) :-
@@ -20,7 +12,7 @@ navigate(Node, [], Instructions, Length) :- navigate(Node, Instructions, Instruc
 result([Instructions|_], Length) :- 
   findall([A,B,'A'], next([A,B,'A'], 'R', _), StartNodes),
   maplist([Start, Length]>>navigate(Start,Instructions,Instructions,Length), StartNodes, Lengths),
-  lcm(Lengths, Length).
+  lcmall(Lengths, Length).
 
 /* required for loadData */
 resetData :- retractall(next(_, _, _)).
